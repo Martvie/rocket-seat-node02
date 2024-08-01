@@ -1,7 +1,7 @@
-import { ICategory, ICategoryCreation } from "../interfaces/categories";
-import { prisma } from "../lib/prisma";
+import { ICategory, ICategoryCreation, ICategoryRepository } from "../../../interfaces/categories";
+import { prisma } from "../../../lib/prisma";
 
-export class CategoryRepository {
+export class CategoryRepository implements ICategoryRepository {
     async create({ name, description }: ICategoryCreation): Promise<ICategoryCreation> {
         const category = await prisma.category.create({
             data: {
@@ -15,12 +15,11 @@ export class CategoryRepository {
 
     async list(): Promise<ICategory[]> {
         const list = await prisma.category.findMany();
-
         return list;
     }
 
-    async fingByName(name: string) {
-        const response = await prisma.category.findFirst({
+    async findByName(name: string): Promise<ICategory | null> {
+        const response: ICategory | null = await prisma.category.findFirst({
             where: {
                 name: name,
             },

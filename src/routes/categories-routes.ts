@@ -1,21 +1,15 @@
 import { FastifyInstance } from "fastify";
 import { ICategoryCreation } from "../interfaces/categories";
-import { CategoryRepository } from "../repositories/CategoryRepository";
+import { CategoryRepository } from "../modules/cars/repositories/CategoryRepository";
+import { CreateCategoryService } from "../modules/cars/services/CreateCategoryService";
 
 const categoryRepository = new CategoryRepository();
 
 export async function categoriesRoutes(app: FastifyInstance) {
     app.post<{ Body: ICategoryCreation }>("/", async (request, reply) => {
+        const createCategoryService = new CreateCategoryService(categoryRepository);
         const { name, description } = request.body;
-
-        const categoryAlredyExist = await categoryRepository.fingByName(name);
-
-        if (categoryAlredyExist) {
-            return reply.status(409).send({ message: "Category alredy exist!" });
-        }
-
-        categoryRepository.create({ name, description });
-
+        createCategoryService.execute({ name, description });
         return reply.status(201).send({ message: "Category created" });
     });
 
