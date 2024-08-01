@@ -1,12 +1,15 @@
 import fastify from "fastify";
+import multer from "fastify-multer";
 import { env } from "./env";
-import { categoriesRoutes } from "./routes/categories-routes";
-import { specificationRoutes } from "./routes/specification-routes";
+import { routes } from "./routes";
 
 const app = fastify();
 
-app.register(categoriesRoutes, { prefix: "/categories" });
-app.register(specificationRoutes, { prefix: "/specification" });
+export const upload = multer({ dest: "./tmp" });
+
+app.register(multer.contentParser);
+
+app.register(routes);
 
 app.listen({ port: 3333 }).then(() => {
     console.log(`Server running on http://localhost:${env.PORT}`);

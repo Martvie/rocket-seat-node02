@@ -9,7 +9,7 @@ export interface ICategory extends ICategoryCreation {
 }
 
 export interface ICategoryRepository {
-    create({ name, description }: ICategoryCreation): Promise<ICategoryCreation>;
+    create({ name, description }: ICategoryCreation): void;
     list(): Promise<ICategory[]>;
     findByName(name: string): Promise<ICategory | null>;
 }

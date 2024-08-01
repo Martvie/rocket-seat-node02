@@ -1,6 +1,6 @@
-import { ISpecificationCreation, ISpecificationRepository } from "../../../interfaces/specification";
+import { ISpecificationCreation, ISpecificationRepository } from "../../../../interfaces/specification";
 
-export class CreateSpecificationService {
+export class CreateSpecificationUseCase {
     constructor(private specificationRepository: ISpecificationRepository) {}
 
     async execute({ name, description }: ISpecificationCreation) {

@@ -1,21 +1,22 @@
 import { FastifyInstance } from "fastify";
 import { ICategoryCreation } from "../interfaces/categories";
-import { CategoryRepository } from "../modules/cars/repositories/CategoryRepository";
-import { CreateCategoryService } from "../modules/cars/services/CreateCategoryService";
-
-const categoryRepository = new CategoryRepository();
+import { ICustomFastifyRequest } from "../interfaces/multer";
+import { createCategoryController } from "../modules/cars/useCases/createCategory";
+import { listCategoryController } from "../modules/cars/useCases/listCategory";
+import { upload } from "../server";
 
 export async function categoriesRoutes(app: FastifyInstance) {
     app.post<{ Body: ICategoryCreation }>("/", async (request, reply) => {
-        const createCategoryService = new CreateCategoryService(categoryRepository);
-        const { name, description } = request.body;
-        createCategoryService.execute({ name, description });
-        return reply.status(201).send({ message: "Category created" });
+        return createCategoryController.handle(request, reply);
     });
 
     app.get("/", async (request, reply) => {
-        const list = await categoryRepository.list();
+        return listCategoryController.haddle(request, reply);
+    });
 
-        return reply.status(200).send(list);
+    app.post("/upload", { preHandler: upload.single("file") }, async (request: ICustomFastifyRequest, reply) => {
+        const file = request.file;
+        console.log(file);
+        reply.send();
     });
 }

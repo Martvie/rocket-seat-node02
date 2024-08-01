@@ -1,16 +1,13 @@
 import { FastifyInstance } from "fastify";
 import { ISpecificationCreation } from "../interfaces/specification";
 import { SpecificationRepository } from "../modules/cars/repositories/SpecificationRepository";
-import { CreateSpecificationService } from "../modules/cars/services/CreateSpecificationService";
+import { createSpecificationController } from "../modules/cars/useCases/createSpecification";
 
 const specificationRepoitory = new SpecificationRepository();
 
 export async function specificationRoutes(app: FastifyInstance) {
     app.post<{ Body: ISpecificationCreation }>("/", (request, reply) => {
-        const { name, description } = request.body;
-        const createSpecificationService = new CreateSpecificationService(specificationRepoitory);
-        createSpecificationService.execute({ name, description });
-        return reply.status(201).send({ message: "Specification created" });
+        return createSpecificationController.handle(request, reply);
     });
 
     app.get("/", async (request, reply) => {

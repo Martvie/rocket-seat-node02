@@ -1,6 +1,6 @@
-import { ICategoryCreation, ICategoryRepository } from "../../../interfaces/categories";
+import { ICategoryCreation, ICategoryRepository } from "../../../../interfaces/categories";
 
-export class CreateCategoryService {
+export class CreateCategoryUseCase {
     constructor(private categoryRepository: ICategoryRepository) {}
     async execute({ name, description }: ICategoryCreation) {
         try {
