@@ -2,6 +2,7 @@ import { FastifyInstance } from "fastify";
 import { ICategoryCreation } from "../interfaces/categories";
 import { ICustomFastifyRequest } from "../interfaces/multer";
 import { createCategoryController } from "../modules/cars/useCases/createCategory";
+import { importCategoryController } from "../modules/cars/useCases/importCategory";
 import { listCategoryController } from "../modules/cars/useCases/listCategory";
 import { upload } from "../server";
 
@@ -15,8 +16,6 @@ export async function categoriesRoutes(app: FastifyInstance) {
     });
 
     app.post("/upload", { preHandler: upload.single("file") }, async (request: ICustomFastifyRequest, reply) => {
-        const file = request.file;
-        console.log(file);
-        reply.send();
+        return importCategoryController.handle(request, reply);
     });
 }
