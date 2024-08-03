@@ -6,7 +6,9 @@ import { routes } from "./routes";
 
 const app: FastifyInstance = fastify();
 
-app.register(require("@fastify/multipart"));
+app.register(require("@fastify/multipart"), {
+    preservePath: true,
+});
 
 const swaggerOptions = {
     openapi: {
