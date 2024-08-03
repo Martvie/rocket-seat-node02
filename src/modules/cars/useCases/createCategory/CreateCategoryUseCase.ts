@@ -3,16 +3,12 @@ import { ICategoryCreation, ICategoryRepository } from "../../../../interfaces/c
 export class CreateCategoryUseCase {
     constructor(private categoryRepository: ICategoryRepository) {}
     async execute({ name, description }: ICategoryCreation) {
-        try {
-            const categoryAlredyExist = await this.categoryRepository.findByName(name);
+        const categoryAlredyExist = await this.categoryRepository.findByName(name);
 
-            if (categoryAlredyExist) {
-                throw new Error("Category alredy exist!");
-            }
-
+        if (!categoryAlredyExist) {
             this.categoryRepository.create({ name, description });
-        } catch (error) {
-            console.log(error);
         }
+
+        return categoryAlredyExist;
     }
 }

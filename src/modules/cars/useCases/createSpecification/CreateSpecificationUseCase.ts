@@ -4,16 +4,12 @@ export class CreateSpecificationUseCase {
     constructor(private specificationRepository: ISpecificationRepository) {}
 
     async execute({ name, description }: ISpecificationCreation) {
-        try {
-            const specificationAlredyExist = await this.specificationRepository.findByName(name);
+        const specificationAlredyExist = await this.specificationRepository.findByName(name);
 
-            if (specificationAlredyExist) {
-                throw new Error("Specification alredy exist!");
-            }
-
+        if (!specificationAlredyExist) {
             this.specificationRepository.create({ name, description });
-        } catch (error) {
-            console.log(error);
         }
+
+        return specificationAlredyExist;
     }
 }

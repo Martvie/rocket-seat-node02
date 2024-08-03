@@ -1,13 +1,10 @@
-import fastify from "fastify";
-import multer from "fastify-multer";
+import fastify, { FastifyInstance } from "fastify";
 import { env } from "./env";
 import { routes } from "./routes";
 
-const app = fastify();
+const app: FastifyInstance = fastify();
 
-export const upload = multer({ dest: "./tmp" });
-
-app.register(multer.contentParser);
+app.register(require("@fastify/multipart"));
 
 app.register(routes);
 

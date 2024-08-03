@@ -7,7 +7,10 @@ export class CreateSpecificationController {
 
     async handle(reques: FastifyRequest<{ Body: ISpecificationCreation }>, reply: FastifyReply) {
         const { name, description } = reques.body;
-        this.createSpecificationUseCase.execute({ name, description });
+        const alredyExist = await this.createSpecificationUseCase.execute({ name, description });
+        if (alredyExist) {
+            return reply.status(409).send({ message: "Specification alredy exist!" });
+        }
         return reply.status(202).send({ message: "specification created" });
     }
 }

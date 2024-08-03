@@ -1,10 +1,8 @@
 import { FastifyInstance } from "fastify";
 import { ICategoryCreation } from "../interfaces/categories";
-import { ICustomFastifyRequest } from "../interfaces/multer";
 import { createCategoryController } from "../modules/cars/useCases/createCategory";
 import { importCategoryController } from "../modules/cars/useCases/importCategory";
 import { listCategoryController } from "../modules/cars/useCases/listCategory";
-import { upload } from "../server";
 
 export async function categoriesRoutes(app: FastifyInstance) {
     app.post<{ Body: ICategoryCreation }>("/", async (request, reply) => {
@@ -15,7 +13,7 @@ export async function categoriesRoutes(app: FastifyInstance) {
         return listCategoryController.haddle(request, reply);
     });
 
-    app.post("/upload", { preHandler: upload.single("file") }, async (request: ICustomFastifyRequest, reply) => {
+    app.post("/upload", async (request, reply) => {
         return importCategoryController.handle(request, reply);
     });
 }
