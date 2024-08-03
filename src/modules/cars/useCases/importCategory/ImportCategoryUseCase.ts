@@ -1,12 +1,12 @@
+import { MultipartFile } from "@fastify/multipart";
 import { parse } from "csv-parse";
 import fs from "fs";
 import { ICategoryCreation, ICategoryRepository } from "../../../../interfaces/categories";
-import { IMultipartFile } from "../../../../interfaces/multipart";
 
 export class ImportCategoryUseCase {
     constructor(private categoriesRepository: ICategoryRepository) {}
 
-    async loadCategories(file: IMultipartFile | undefined): Promise<ICategoryCreation[]> {
+    async loadCategories(file: MultipartFile | undefined): Promise<ICategoryCreation[]> {
         return new Promise((resolve, reject) => {
             const stream = fs.createReadStream(file!.filename);
             const categories: ICategoryCreation[] = [];
@@ -29,7 +29,7 @@ export class ImportCategoryUseCase {
         });
     }
 
-    async execute(file: IMultipartFile | undefined) {
+    async execute(file: MultipartFile | undefined) {
         const categories = await this.loadCategories(file);
         categories.map(async (category) => {
             const { name, description } = category;

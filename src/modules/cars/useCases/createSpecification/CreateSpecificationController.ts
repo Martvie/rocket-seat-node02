@@ -11,6 +11,6 @@ export class CreateSpecificationController {
         if (alredyExist) {
             return reply.status(409).send({ message: "Specification alredy exist!" });
         }
-        return reply.status(202).send({ message: "specification created" });
+        return reply.status(201).send({ message: "specification created" });
     }
 }
