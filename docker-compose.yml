@@ -1,6 +1,17 @@
 version: '3.7'
 
 services:
+  database: 
+    image: 16.3-alpine3.20
+    container_name: database-rentx
+    ports:
+      -5432:5432
+    environment:
+      - POSTGRES_USER=docker
+      - POSTGRES_PASSWORD=skajaççsj
+      - POSTGRES_DB=rentx
+    network_mode: host
+
   app:
     build: .
     container_name: rentx
@@ -8,3 +19,4 @@ services:
       - 3333:3333
     volumes:
       - .:/usr/app
+    network_mode: host
