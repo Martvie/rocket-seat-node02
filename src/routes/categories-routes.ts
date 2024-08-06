@@ -1,8 +1,12 @@
 import { FastifyInstance } from "fastify";
 import { ICategoryCreation } from "../interfaces/categories";
-import { createCategoryController } from "../modules/cars/useCases/createCategory";
-import { importCategoryController } from "../modules/cars/useCases/importCategory";
-import { listCategoryController } from "../modules/cars/useCases/listCategory";
+import { CreateCategoryController } from "../modules/cars/useCases/createCategory/CreateCategoryController";
+import { ImportCategoryController } from "../modules/cars/useCases/importCategory/ImportCategoryController";
+import { ListCategoryController } from "../modules/cars/useCases/listCategory/ListCategoryController";
+
+const createCategoryController = new CreateCategoryController();
+const importCategoryController = new ImportCategoryController();
+const listCategoryController = new ListCategoryController();
 
 export async function categoriesRoutes(app: FastifyInstance) {
     app.post<{ Body: ICategoryCreation }>(
@@ -16,7 +20,8 @@ export async function categoriesRoutes(app: FastifyInstance) {
                 response: {
                     201: {
                         description: "Category created",
-                        type: "null",
+                        type: "object",
+                        properties: { message: { type: "string" } },
                     },
                     409: {
                         description: "Category alredy exist!",
@@ -25,7 +30,7 @@ export async function categoriesRoutes(app: FastifyInstance) {
                 },
             },
         },
-        async (request, reply) => {
+        (request, reply) => {
             return createCategoryController.handle(request, reply);
         }
     );
@@ -54,7 +59,7 @@ export async function categoriesRoutes(app: FastifyInstance) {
                 },
             },
         },
-        async (request, reply) => {
+        (request, reply) => {
             return listCategoryController.haddle(request, reply);
         }
     );
@@ -66,6 +71,13 @@ export async function categoriesRoutes(app: FastifyInstance) {
                 description: "Upload a file to create many categories",
                 tags: ["Category"],
                 summary: "Create many categories",
+                consumes: ["multipart/form-data"],
+                body: {
+                    type: "object",
+                    properties: {
+                        file: { type: "string", format: "binary" },
+                    },
+                },
                 response: {
                     200: {
                         description: "Sucess",
@@ -74,7 +86,7 @@ export async function categoriesRoutes(app: FastifyInstance) {
                 },
             },
         },
-        async (request, reply) => {
+        (request, reply) => {
             return importCategoryController.handle(request, reply);
         }
     );

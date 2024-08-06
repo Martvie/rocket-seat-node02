@@ -1,11 +1,11 @@
 import { FastifyReply, FastifyRequest } from "fastify";
+import { container } from "tsyringe";
 import { ListCategoryUseCase } from "./ListCategoryUseCase";
 
 export class ListCategoryController {
-    constructor(private listCategoryUseCase: ListCategoryUseCase) {}
-
     async haddle(request: FastifyRequest, reply: FastifyReply) {
-        const list = await this.listCategoryUseCase.execute();
+        const listCategoryUseCase = container.resolve(ListCategoryUseCase);
+        const list = await listCategoryUseCase.execute();
 
         return reply.status(200).send(list);
     }

@@ -1,8 +1,10 @@
 import fastifySwagger from "@fastify/swagger";
 import fastifySwaggerUi from "@fastify/swagger-ui";
 import fastify, { FastifyInstance } from "fastify";
+import "reflect-metadata"; // tsyringe
 import { env } from "./env";
 import { routes } from "./routes";
+import "./shared/container";
 
 const app: FastifyInstance = fastify();
 
@@ -15,8 +17,8 @@ const swaggerOptions = {
         openapi: "3.0.0",
         swagger: {
             info: {
-                title: "My Title",
-                description: "My Description.",
+                title: "RentX",
+                description: "Documentation for RentX App",
                 version: "1.0.0",
             },
             host: "localhost",

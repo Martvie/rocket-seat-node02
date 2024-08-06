@@ -1,9 +1,10 @@
 import { FastifyInstance } from "fastify";
 import { ISpecificationCreation } from "../interfaces/specification";
 import { SpecificationRepository } from "../modules/cars/repositories/SpecificationRepository";
-import { createSpecificationController } from "../modules/cars/useCases/createSpecification";
+import { CreateSpecificationController } from "../modules/cars/useCases/createSpecification/CreateSpecificationController";
 
 const specificationRepoitory = new SpecificationRepository();
+const createSpecificationController = new CreateSpecificationController();
 
 export async function specificationRoutes(app: FastifyInstance) {
     app.post<{ Body: ISpecificationCreation }>(
@@ -17,7 +18,8 @@ export async function specificationRoutes(app: FastifyInstance) {
                 response: {
                     201: {
                         description: "Specification created",
-                        type: "null",
+                        type: "object",
+                        properties: { message: { type: "string" } },
                     },
                     409: {
                         description: "Specification alredy exist!",

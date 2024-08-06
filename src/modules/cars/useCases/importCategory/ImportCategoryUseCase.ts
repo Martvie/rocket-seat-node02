@@ -1,6 +1,7 @@
 import { MultipartFile } from "@fastify/multipart";
 import { parse } from "csv-parse";
 import path from "path";
+import { inject, injectable } from "tsyringe";
 import { ICategoryCreation, ICategoryRepository } from "../../../../interfaces/categories";
 
 const fs = require("fs");
@@ -8,8 +9,12 @@ const util = require("util");
 const { pipeline } = require("stream");
 const pump = util.promisify(pipeline);
 
+@injectable()
 export class ImportCategoryUseCase {
-    constructor(private categoriesRepository: ICategoryRepository) {}
+    constructor(
+        @inject("CategoryRepository")
+        private categoriesRepository: ICategoryRepository
+    ) {}
 
     async loadCategories(file: MultipartFile | undefined): Promise<ICategoryCreation[]> {
         const data = file;
@@ -31,6 +36,9 @@ export class ImportCategoryUseCase {
                 })
                 .on("end", () => {
                     fs.promises.unlink(filePath);
+                    setTimeout(() => {
+                        3000;
+                    });
                     resolve(categories);
                 })
                 .on("error", (err: Error) => {

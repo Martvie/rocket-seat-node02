@@ -1,14 +1,18 @@
+import { inject, injectable } from "tsyringe";
 import { ICategoryCreation, ICategoryRepository } from "../../../../interfaces/categories";
 
+@injectable()
 export class CreateCategoryUseCase {
-    constructor(private categoryRepository: ICategoryRepository) {}
+    constructor(
+        @inject("CategoryRepository")
+        private categoryRepository: ICategoryRepository
+    ) {}
     async execute({ name, description }: ICategoryCreation) {
         const categoryAlredyExist = await this.categoryRepository.findByName(name);
 
-        if (!categoryAlredyExist) {
-            this.categoryRepository.create({ name, description });
+        if (categoryAlredyExist) {
+            throw new Error("Category Alredy exist!");
         }
-
-        return categoryAlredyExist;
+        await this.categoryRepository.create({ name, description });
     }
 }

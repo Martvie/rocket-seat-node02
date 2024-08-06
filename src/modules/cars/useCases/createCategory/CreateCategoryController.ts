@@ -1,16 +1,14 @@
 import { FastifyReply, FastifyRequest } from "fastify";
+import { container } from "tsyringe";
 import { ICategoryCreation } from "../../../../interfaces/categories";
 import { CreateCategoryUseCase } from "./CreateCategoryUseCase";
 
 export class CreateCategoryController {
-    constructor(private createCategoryUseCase: CreateCategoryUseCase) {}
-    async handle(request: FastifyRequest<{ Body: ICategoryCreation }>, reply: FastifyReply): Promise<Response> {
+    async handle(request: FastifyRequest<{ Body: ICategoryCreation }>, reply: FastifyReply): Promise<void> {
         const { name, description } = request.body;
-        const alredyExist = await this.createCategoryUseCase.execute({ name, description });
+        const createCategoryUseCase = container.resolve(CreateCategoryUseCase);
 
-        if (alredyExist) {
-            return reply.status(409).send({ message: "Category alredy exist!" });
-        }
+        await createCategoryUseCase.execute({ name, description });
 
         return reply.status(201).send({ message: "Category created" });
     }

@@ -9,7 +9,7 @@ export interface ISpecification extends ISpecificationCreation {
 }
 
 export interface ISpecificationRepository {
-    create({ name, description }: ISpecificationCreation): Promise<ISpecificationCreation>;
+    create({ name, description }: ISpecificationCreation): Promise<void>;
     list(): Promise<ISpecification[]>;
     findByName(name: string): Promise<ISpecification | null>;
 }

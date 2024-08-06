@@ -2,15 +2,13 @@ import { ISpecification, ISpecificationCreation, ISpecificationRepository } from
 import { prisma } from "../../../lib/prisma";
 
 export class SpecificationRepository implements ISpecificationRepository {
-    async create({ name, description }: ISpecificationCreation): Promise<ISpecificationCreation> {
-        const specification: ISpecificationCreation = await prisma.specification.create({
+    async create({ name, description }: ISpecificationCreation): Promise<void> {
+        await prisma.specification.create({
             data: {
                 name,
                 description,
             },
         });
-
-        return specification;
     }
 
     async list(): Promise<ISpecification[]> {
