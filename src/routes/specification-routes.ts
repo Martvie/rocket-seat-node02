@@ -1,5 +1,6 @@
 import { FastifyInstance } from "fastify";
 import { ISpecificationCreation } from "../interfaces/specification";
+import { ensureAuthenticaded } from "../middlewares/ensureAuthenticated";
 import { SpecificationRepository } from "../modules/cars/repositories/SpecificationRepository";
 import { CreateSpecificationController } from "../modules/cars/useCases/createSpecification/CreateSpecificationController";
 
@@ -10,6 +11,7 @@ export async function specificationRoutes(app: FastifyInstance) {
     app.post<{ Body: ISpecificationCreation }>(
         "/",
         {
+            preHandler: ensureAuthenticaded,
             schema: {
                 description: "Create a new specification",
                 tags: ["Specification"],

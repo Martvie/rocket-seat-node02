@@ -1,6 +1,5 @@
 export interface IUserCreation {
     name: string;
-    username: string;
     password: string;
     email: string;
     drive_license: string;
@@ -12,6 +11,7 @@ export interface IUser extends IUserCreation {
 }
 
 export interface IUserRepository {
-    create({ name, username, password, email, drive_license }: IUserCreation): Promise<void>;
+    create({ name, password, email, drive_license }: IUserCreation): Promise<void>;
     findByEmail(email: string): Promise<IUser | null>;
+    findById(id: string): Promise<IUser | null>;
 }
