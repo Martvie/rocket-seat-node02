@@ -36,6 +36,7 @@ model User {
   drive_license String
   admin         Boolean  @default(false)
   created_at    DateTime @default(now())
+  avatar        String?
 
   @@map("users")
 }

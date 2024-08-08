@@ -3,6 +3,7 @@ import fastifySwaggerUi from "@fastify/swagger-ui";
 import fastify, { FastifyInstance } from "fastify";
 import "reflect-metadata"; // tsyringe
 import { env } from "./env";
+import { AppError } from "./errors/appError";
 import { routes } from "./routes";
 import "./shared/container";
 
@@ -39,6 +40,14 @@ app.register(fastifySwagger, swaggerOptions);
 app.register(fastifySwaggerUi, swaggerUiOptions);
 
 app.register(routes);
+
+app.setErrorHandler((error, request, reply) => {
+    if (error instanceof AppError) {
+        reply.status(error.statusCode).send({ message: error.message });
+    }
+
+    reply.status(500).send({ message: `internal server error ${error.message}` });
+});
 
 app.listen({ port: 3333 }).then(() => {
     console.log(`Server running on http://localhost:${env.PORT}`);

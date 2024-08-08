@@ -1,5 +1,6 @@
 import { FastifyReply, FastifyRequest, HookHandlerDoneFunction } from "fastify";
 import { verify } from "jsonwebtoken";
+import { AppError } from "../errors/appError";
 import { UserRepository } from "../modules/accounts/respositories/userRepository";
 
 interface IPayload {
@@ -11,7 +12,7 @@ interface IPayload {
 export async function ensureAuthenticaded(request: FastifyRequest, reply: FastifyReply, done: HookHandlerDoneFunction) {
     const authHeader = request.headers.authorization;
     if (!authHeader) {
-        throw new Error("Token Missing");
+        throw new AppError("Token Missing", 401);
     }
     const [, token] = authHeader!.split(" ");
 
@@ -20,9 +21,12 @@ export async function ensureAuthenticaded(request: FastifyRequest, reply: Fastif
         const userRepository = new UserRepository();
         const user = await userRepository.findById(user_id);
         if (!user) {
-            throw new Error("User does not exist!");
+            throw new AppError("User does not exist!", 404);
         }
+        request.user = {
+            id: user_id,
+        };
     } catch (err) {
-        throw new Error("Invalid token");
+        throw new AppError("Invalid token", 401);
     }
 }
