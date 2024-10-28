@@ -1,6 +1,6 @@
 import { inject, injectable } from "tsyringe";
-import { AppError } from "../../../../errors/appError";
 import { ISpecificationCreation, ISpecificationRepository } from "../../../../interfaces/specification";
+import { AppError } from "../../../../shared/errors/appError";
 
 @injectable()
 export class CreateSpecificationUseCase {

@@ -1,7 +1,7 @@
 import { FastifyReply, FastifyRequest, HookHandlerDoneFunction } from "fastify";
 import { verify } from "jsonwebtoken";
-import { AppError } from "../errors/appError";
 import { UserRepository } from "../modules/accounts/respositories/userRepository";
+import { AppError } from "../shared/errors/appError";
 
 interface IPayload {
     iat: number;

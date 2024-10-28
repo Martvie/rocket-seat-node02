@@ -3,11 +3,13 @@ import fastifySwaggerUi from "@fastify/swagger-ui";
 import fastify, { FastifyInstance } from "fastify";
 import "reflect-metadata"; // tsyringe
 import { env } from "./env";
-import { AppError } from "./errors/appError";
 import { routes } from "./routes";
 import "./shared/container";
+import { AppError } from "./shared/errors/appError";
 
 const app: FastifyInstance = fastify();
+
+//TODO #F2062
 
 app.register(require("@fastify/multipart"), {
     preservePath: true,

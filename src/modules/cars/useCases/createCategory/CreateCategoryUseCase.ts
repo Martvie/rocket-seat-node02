@@ -1,7 +1,7 @@
 import "reflect-metadata";
 import { inject, injectable } from "tsyringe";
-import { AppError } from "../../../../errors/appError";
 import { ICategoryCreation, ICategoryRepository } from "../../../../interfaces/categories";
+import { AppError } from "../../../../shared/errors/appError";
 
 @injectable()
 export class CreateCategoryUseCase {

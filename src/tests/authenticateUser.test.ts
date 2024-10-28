@@ -1,7 +1,7 @@
-import { AppError } from "../errors/appError";
 import { IUserCreation } from "../interfaces/user";
 import { AuthenticateUser } from "../modules/accounts/useCases/authenticateUserUseCase";
 import { UserUseCase } from "../modules/accounts/useCases/userUseCases";
+import { AppError } from "../shared/errors/appError";
 import { UserRepositoryInMemory } from "./inmemory/UserRepositoryInMemory";
 
 let userRepositoryInMemory: UserRepositoryInMemory;
